@@ -2,6 +2,7 @@
 import React, { useRef, useEffect } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
+import africaGeoJson from '@assets/map/africa_shape.json';
 
 mapboxgl.accessToken = mapboxgl.accessToken =
   import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
