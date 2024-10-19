@@ -18,4 +18,4 @@ class IPCService {
   }
 }
 
-export const IPCService = new IPCService();
+export const ipcService = new IPCService();

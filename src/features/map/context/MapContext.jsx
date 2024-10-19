@@ -5,7 +5,7 @@ const MapContext = createContext();
 
 const MapProvider = ({ children }) => {
   const [selectedCountry, setSelectedCountry] = useState(null);
-  const [activeLayer, setActiveLayer] = useState("ipc");
+  const [activeLayer, setActiveLayer] = useState("fcs");
   const mapRef = useRef(null);
 
   return (
