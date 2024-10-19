@@ -1,5 +1,5 @@
 import React from "react";
-import MapComponent from "@components/MapComponent";
+import MapComponent from "@features/map/components/MapComponent";
 
 export default function Homepage() {
   return (

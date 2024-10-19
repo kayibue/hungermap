@@ -1,10 +1,12 @@
+import { useRef } from "react";
 import { createContext, useState } from "react";
 
 const MapContext = createContext();
 
-export const MapProvider = ({ children }) => {
+const MapProvider = ({ children }) => {
   const [selectedCountry, setSelectedCountry] = useState(null);
   const [activeLayer, setActiveLayer] = useState("ipc");
+  const mapRef = useRef(null);
 
   return (
     <MapContext.Provider
@@ -13,6 +15,7 @@ export const MapProvider = ({ children }) => {
         setSelectedCountry,
         activeLayer,
         setActiveLayer,
+        mapRef,
       }}
     >
       {children}
