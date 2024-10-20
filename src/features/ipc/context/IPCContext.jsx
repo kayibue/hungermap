@@ -1,78 +1,3 @@
-// import React, { createContext, useEffect, useState } from "react";
-// import { ipcService } from "../services/ipc.services";
-// import { useMapContext } from "../../map/hooks/useMapContext";
-
-// const IPCContext = createContext();
-
-// const IPCProvider = ({ children }) => {
-//   const [ipcData, setIPCData] = useState([]);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState(null);
-//   const { mapRef } = useMapContext();
-
-//   useEffect(() => {
-//     const fetchData = async () => {
-//       try {
-//         const data = await ipcService.fetchIPCData();
-//         setIPCData(data?.data?.body?.ipc_peaks);
-//       } catch (err) {
-//         setError(err);
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchData();
-//   }, []);
-
-//   const applyIPCLayer = () => {
-//     console.log(ipcData);
-
-//     if (mapRef.current && ipcData.length > 0) {
-//       ipcData.forEach((ipcCountry) => {
-//         const countryIso3 = ipcCountry.iso3;
-
-//         console.log(mapRef.current.getStyle().layers);
-
-//         const countryFeature = mapRef.current.querySourceFeatures("africa", {
-//           sourceLayer: "africa-countries",
-//           filter: ["==", "iso3", countryIso3],
-//         })[0];
-
-//         console.log(countryFeature);
-
-//         if (countryFeature) {
-//           const phaseSeverity = ipcCountry.phase_3_plus_number;
-
-//           let fillColor = "#FFFFFF";
-//           if (phaseSeverity > 1000000) {
-//             fillColor = "#FF0000";
-//           } else if (phaseSeverity > 500000) {
-//             fillColor = "#FFA500";
-//           } else {
-//             fillColor = "#FFFF00";
-//           }
-
-//           mapRef.current.setPaintProperty("country-boundaries", "fill-color", [
-//             "match",
-//             ["get", "iso3"],
-//             countryIso3,
-//             fillColor,
-//             "#FFFFFF",
-//           ]);
-//         }
-//       });
-//     }
-//   };
-
-//   return (
-//     <IPCContext.Provider value={{ loading, error, applyIPCLayer }}>
-//       {children}
-//     </IPCContext.Provider>
-//   );
-// };
-
-// export { IPCContext, IPCProvider };
 import React, { createContext, useEffect, useState } from "react";
 import { ipcService } from "../services/ipc.services";
 import { useMapContext } from "../../map/hooks/useMapContext";
@@ -135,7 +60,7 @@ const IPCProvider = ({ children }) => {
               1000000,
               "#a50f15",
             ],
-            "#ccc", // Default color for countries without data
+            "#ccc",
           ],
           "fill-opacity": 0.7,
           "fill-outline-color": "#000",

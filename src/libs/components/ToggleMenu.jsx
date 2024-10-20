@@ -6,6 +6,7 @@ import rainIcon from "@assets/icons/rain.json";
 import chartIcon from "@assets/icons/chart.json";
 import { useMapContext } from "../../features/map/hooks/useMapContext";
 import { useIPCContext } from "../../features/ipc/hooks/useIPCContext";
+import { useEffect } from "react";
 
 const iconData = [
   // { id: "food", animationData: foodIcon, label: "Food", layer: "fcs" },
@@ -30,8 +31,15 @@ export default function ToggleMenu() {
 
   const handleLayerChange = (layer) => {
     setActiveLayer(layer);
-    applyIPCLayer();
   };
+
+  useEffect(() => {
+    if (activeLayer === "ipc") {
+      applyIPCLayer();
+    } else if (activeLayer === "rain") {
+    } else if (activeLayer === "vegetation") {
+    }
+  }, [activeLayer]);
 
   return (
     <div className=" text-white flex flex-col items-center space-y-6">
