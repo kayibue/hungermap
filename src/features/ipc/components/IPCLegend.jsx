@@ -9,11 +9,14 @@ const IPCLegend = () => {
     { range: "3.0 - 4.99 million", color: "#ef3b2c" },
     { range: "5.0 - 9.99 million", color: "#cb181d" },
     { range: "> 10 million", color: "#99000d" },
-    { range: "Not Analyzed", color: "#ccc" },
+    { range: "Not Analyzed", color: "#3d3d3d" },
   ];
 
   return (
-    <div className=" bg-white bg-opacity-40 p-2 rounded shadow w-max">
+    <div
+      className=" bg-white bg-opacity-40 p-2 rounded shadow w-max"
+      data-aos="fade-up"
+    >
       <h3 className="text-sm font-semibold mb-2">IPC Phase 3+ Population</h3>
       <ul className="flex flex-col lg:flex-row justify-center space-x-4 w-max">
         {legendItems.map((item, index) => (

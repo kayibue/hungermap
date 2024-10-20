@@ -32,7 +32,10 @@ export default function ToggleMenu() {
   };
 
   return (
-    <div className=" text-white flex flex-col items-center space-y-6">
+    <div
+      className=" text-white flex flex-col items-center space-y-6"
+      data-aos="fade-left"
+    >
       {iconData.map(({ id, animationData, layer }) => (
         <div key={id} className="flex flex-col items-center">
           <button

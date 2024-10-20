@@ -9,7 +9,7 @@ const IPCProvider = ({ children }) => {
   const [ipcData, setIPCData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { mapRef, activeLayer } = useMapContext();
+  const { mapRef, activeLayer, customPopup } = useMapContext();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,84 +26,73 @@ const IPCProvider = ({ children }) => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    if (!mapRef.current) return;
+  // useEffect(() => {
+  //   if (!mapRef.current) return;
 
-    let hoveredStateId = null;
-    let popup = null;
+  //   let hoveredStateId = null;
 
-    const handleMouseMove = (e) => {
-      if (e.features.length > 0) {
-        const feature = e.features[0];
+  //   const handleMouseMove = (e) => {
+  //     if (e.features.length > 0) {
+  //       const feature = e.features[0];
 
-        if (hoveredStateId !== null) {
-          mapRef.current.setFeatureState(
-            { source: "africa", id: hoveredStateId },
-            { hover: false }
-          );
-        }
+  //       if (hoveredStateId !== null) {
+  //         mapRef.current.setFeatureState(
+  //           { source: "africa", id: hoveredStateId },
+  //           { hover: false }
+  //         );
+  //       }
 
-        hoveredStateId = feature.id;
+  //       hoveredStateId = feature.id;
 
-        mapRef.current.setFeatureState(
-          { source: "africa", id: hoveredStateId },
-          { hover: true }
-        );
+  //       mapRef.current.setFeatureState(
+  //         { source: "africa", id: hoveredStateId },
+  //         { hover: true }
+  //       );
 
-        const countryCode = feature.properties["iso-a3"];
-        const phase3Value = ipcData.find(
-          (item) => item.iso3 === countryCode
-        )?.phase_3_number;
+  //       const countryCode = feature.properties["iso-a3"];
+  //       const phase3Value = ipcData.find(
+  //         (item) => item.iso3 === countryCode
+  //       )?.phase_3_number;
 
-        if (phase3Value !== undefined) {
-          // If there's already an active popup, remove it
-          if (popup) {
-            popup.remove();
-          }
+  //       if (phase3Value !== undefined) {
+  //         customPopup.current.remove();
 
-          // Create a new popup and set it to the current hover
-          popup = new mapboxgl.Popup({
-            closeButton: false,
-            closeOnClick: false,
-          })
-            .setLngLat(e.lngLat)
-            .setHTML(
-              `
-              <h3>${feature.properties.name}</h3>
-              <p>Phase 3: ${phase3Value / 1000000} million</p>
-            `
-            )
-            .addTo(mapRef.current);
-        }
-      }
-    };
+  //         // Create a new popup and set it to the current hover
+  //         customPopup.current
+  //           .setLngLat(e.lngLat)
+  //           .setHTML(
+  //             `
+  //             <h3>${feature.properties.name}</h3>
+  //             <p>Phase 3: ${phase3Value / 1000000} million</p>
+  //           `
+  //           )
+  //           .addTo(mapRef.current);
+  //       }
+  //     }
+  //   };
 
-    const handleMouseLeave = () => {
-      if (hoveredStateId !== null) {
-        mapRef.current.setFeatureState(
-          { source: "africa", id: hoveredStateId },
-          { hover: false }
-        );
-      }
+  //   const handleMouseLeave = () => {
+  //     if (hoveredStateId !== null) {
+  //       mapRef.current.setFeatureState(
+  //         { source: "africa", id: hoveredStateId },
+  //         { hover: false }
+  //       );
+  //     }
 
-      // Remove the popup when leaving the feature
-      if (popup) {
-        popup.remove();
-        popup = null;
-      }
+  //     // Remove the popup when leaving the feature
+  //     customPopup.current.remove();
+  //     hoveredStateId = null;
+  //   };
 
-      hoveredStateId = null;
-    };
+  //   mapRef.current.on("mousemove", "ipc-layer", handleMouseMove);
+  //   mapRef.current.on("mouseleave", "ipc-layer", handleMouseLeave);
 
-    mapRef.current.on("mousemove", "ipc-layer", handleMouseMove);
-    mapRef.current.on("mouseleave", "ipc-layer", handleMouseLeave);
-
-    return () => {
-      // Clean up event listeners
-      mapRef.current.off("mousemove", "ipc-layer", handleMouseMove);
-      mapRef.current.off("mouseleave", "ipc-layer", handleMouseLeave);
-    };
-  }, [ipcData]);
+  //   return () => {
+  //     // Clean up event listeners
+  //     mapRef.current.off("mousemove", "ipc-layer", handleMouseMove);
+  //     mapRef.current.off("mouseleave", "ipc-layer", handleMouseLeave);
+  //   };
+  // }, [ipcData]);
 
   const applyIPCLayer = () => {
     if (mapRef.current && ipcData.length > 1) {
@@ -111,6 +100,19 @@ const IPCProvider = ({ children }) => {
       ipcData.forEach((item) => {
         phase3Lookup[item.iso3] = item.phase_3_plus_number / 1000000;
       });
+
+      // Check if the layer already exists and remove it if it does
+      // if (mapRef.current.getLayer("africa-countries")) {
+      //   mapRef.current.removeLayer("africa-countries");
+      // }
+
+      if (mapRef.current.getLayer("ipc-layer")) {
+        mapRef.current.removeLayer("ipc-layer");
+      }
+
+      if (mapRef.current.getLayer("ipc-hover")) {
+        mapRef.current.removeLayer("ipc-hover");
+      }
 
       mapRef.current.addLayer({
         id: "ipc-layer",
@@ -139,7 +141,7 @@ const IPCProvider = ({ children }) => {
               10.0,
               "#99000d",
             ],
-            "#ccc",
+            "#3d3d3d",
           ],
           "fill-opacity": 0.8,
           "fill-outline-color": "#000",
@@ -151,7 +153,7 @@ const IPCProvider = ({ children }) => {
         type: "line",
         source: "africa",
         paint: {
-          "line-color": "#000",
+          "line-color": "#ccc",
           "line-width": [
             "case",
             ["boolean", ["feature-state", "hover"], false],
@@ -160,6 +162,65 @@ const IPCProvider = ({ children }) => {
           ],
         },
       });
+
+      // Handle overlaying the popup
+      let hoveredStateId = null;
+
+      const handleMouseMove = (e) => {
+        if (e.features.length > 0) {
+          const feature = e.features[0];
+
+          if (hoveredStateId !== null) {
+            mapRef.current.setFeatureState(
+              { source: "africa", id: hoveredStateId },
+              { hover: false }
+            );
+          }
+
+          hoveredStateId = feature.id;
+
+          mapRef.current.setFeatureState(
+            { source: "africa", id: hoveredStateId },
+            { hover: true }
+          );
+
+          const countryCode = feature.properties["iso-a3"];
+          const phase3Value = ipcData.find(
+            (item) => item.iso3 === countryCode
+          )?.phase_3_number;
+
+          if (phase3Value !== undefined) {
+            customPopup.current.remove();
+
+            // Create a new popup and set it to the current hover
+            customPopup.current
+              .setLngLat(e.lngLat)
+              .setHTML(
+                `
+              <h3>${feature.properties.name}</h3>
+              <p>Phase 3: ${phase3Value / 1000000} million</p>
+            `
+              )
+              .addTo(mapRef.current);
+          }
+        }
+      };
+
+      const handleMouseLeave = () => {
+        if (hoveredStateId !== null) {
+          mapRef.current.setFeatureState(
+            { source: "africa", id: hoveredStateId },
+            { hover: false }
+          );
+        }
+
+        // Remove the popup when leaving the feature
+        customPopup.current.remove();
+        hoveredStateId = null;
+      };
+
+      mapRef.current.on("mousemove", "ipc-layer", handleMouseMove);
+      mapRef.current.on("mouseleave", "ipc-layer", handleMouseLeave);
     }
   };
 
