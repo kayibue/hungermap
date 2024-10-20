@@ -9,7 +9,7 @@ mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 const MapComponent = () => {
   const mapContainerRef = useRef(null);
   const tooltipRef = useRef(null);
-  const { setSelectedCountry, mapRef } = useMapContext();
+  const { setSelectedCountry, mapRef, activeLayer } = useMapContext();
 
   useEffect(() => {
     const map = new mapboxgl.Map({
@@ -25,7 +25,6 @@ const MapComponent = () => {
     });
 
     map.addControl(new mapboxgl.NavigationControl(), "bottom-right");
-    mapRef.current = map;
 
     const initializeMap = () => {
       map.addSource("africa", {
@@ -42,8 +41,8 @@ const MapComponent = () => {
           "fill-opacity": [
             "case",
             ["boolean", ["feature-state", "hover"], false],
-            0.5, 
-            0, 
+            0.5,
+            0,
           ],
         },
       });
@@ -53,7 +52,7 @@ const MapComponent = () => {
         type: "line",
         source: "africa",
         paint: {
-          "line-color": "#FF0000",
+          "line-color": "#FF0000", // Red borders
           "line-width": 1,
         },
       });
@@ -75,6 +74,7 @@ const MapComponent = () => {
         const country = e.features[0];
         showTooltip(e, country.properties.name);
         resetHoverState();
+
         map.setFeatureState(
           { source: "africa", id: country.id },
           { hover: true }
@@ -103,13 +103,23 @@ const MapComponent = () => {
       setSelectedCountry(country.properties.name);
     };
 
+    const handleMouseLeave = () => {
+      hideTooltip();
+      resetHoverState(); // Ensure hover state is reset on mouse leave
+    };
+
     map.on("load", initializeMap);
     map.on("mousemove", "africa-countries", handleMouseMove);
-    map.on("mouseleave", "africa-countries", hideTooltip);
+    map.on("mouseleave", "africa-countries", handleMouseLeave); // Add this handler
     map.on("click", "africa-countries", handleCountryClick);
+    map.on("style.load", () => {
+      map.setLayoutProperty("country-label", "visibility", "none");
+    });
 
     const handleResize = () => map.resize();
     window.addEventListener("resize", handleResize);
+
+    mapRef.current = map;
 
     return () => {
       map.remove();

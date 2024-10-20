@@ -1,13 +1,20 @@
 import React from "react";
 import Lottie from "react-lottie";
-import foodIcon from "@assets/icons/food.json";
+// import foodIcon from "@assets/icons/food.json";
 import forestIcon from "@assets/icons/forest.json";
 import rainIcon from "@assets/icons/rain.json";
 import chartIcon from "@assets/icons/chart.json";
 import { useMapContext } from "../../features/map/hooks/useMapContext";
+import { useIPCContext } from "../../features/ipc/hooks/useIPCContext";
 
 const iconData = [
-  { id: "food", animationData: foodIcon, label: "Food", layer: "fcs" },
+  // { id: "food", animationData: foodIcon, label: "Food", layer: "fcs" },
+  {
+    id: "chart",
+    animationData: chartIcon,
+    label: "Charts",
+    layer: "ipc",
+  },
   { id: "rain", animationData: rainIcon, label: "Rain", layer: "rain" },
   {
     id: "forest",
@@ -15,24 +22,20 @@ const iconData = [
     label: "Vegetation",
     layer: "vegetation",
   },
-  {
-    id: "chart",
-    animationData: chartIcon,
-    label: "Charts",
-    layer: "ipc",
-  },
 ];
 
 export default function ToggleMenu() {
   const { activeLayer, setActiveLayer } = useMapContext();
+  const { applyIPCLayer } = useIPCContext();
 
   const handleLayerChange = (layer) => {
     setActiveLayer(layer);
+    applyIPCLayer();
   };
 
   return (
     <div className=" text-white flex flex-col items-center space-y-6">
-      {iconData.map(({ id, animationData, label, layer }) => (
+      {iconData.map(({ id, animationData, layer }) => (
         <div key={id} className="flex flex-col items-center">
           <button
             onClick={() => handleLayerChange(layer)}
