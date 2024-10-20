@@ -4,8 +4,7 @@ import Lottie from "react-lottie";
 import forestIcon from "@assets/icons/forest.json";
 import rainIcon from "@assets/icons/rain.json";
 import chartIcon from "@assets/icons/chart.json";
-import { useMapContext } from "../../features/map/hooks/useMapContext";
-import { useIPCContext } from "../../features/ipc/hooks/useIPCContext";
+import { useMapContext } from "@features/map/hooks/useMapContext";
 import { useEffect } from "react";
 
 const iconData = [
@@ -27,19 +26,10 @@ const iconData = [
 
 export default function ToggleMenu() {
   const { activeLayer, setActiveLayer } = useMapContext();
-  const { applyIPCLayer } = useIPCContext();
 
   const handleLayerChange = (layer) => {
     setActiveLayer(layer);
   };
-
-  useEffect(() => {
-    if (activeLayer === "ipc") {
-      applyIPCLayer();
-    } else if (activeLayer === "rain") {
-    } else if (activeLayer === "vegetation") {
-    }
-  }, [activeLayer]);
 
   return (
     <div className=" text-white flex flex-col items-center space-y-6">

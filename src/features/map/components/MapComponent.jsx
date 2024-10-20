@@ -8,8 +8,7 @@ mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
 
 const MapComponent = () => {
   const mapContainerRef = useRef(null);
-  const tooltipRef = useRef(null);
-  const { setSelectedCountry, mapRef, activeLayer } = useMapContext();
+  const { setSelectedCountry, mapRef } = useMapContext();
 
   useEffect(() => {
     const map = new mapboxgl.Map({
@@ -69,31 +68,30 @@ const MapComponent = () => {
         });
     };
 
+    const africaPopup = new mapboxgl.Popup({
+      closeButton: false,
+      closeOnClick: false,
+    });
+
     const handleMouseMove = (e) => {
       if (e.features.length > 0) {
         const country = e.features[0];
-        showTooltip(e, country.properties.name);
         resetHoverState();
 
         map.setFeatureState(
           { source: "africa", id: country.id },
           { hover: true }
         );
+
+        // Set popup content and position
+        africaPopup
+          .setLngLat(e.lngLat)
+          .setHTML(`<strong>${country.properties.name}</strong>`)
+          .addTo(map);
       } else {
-        hideTooltip();
+        africaPopup.remove();
         resetHoverState();
       }
-    };
-
-    const showTooltip = (e, countryName) => {
-      tooltipRef.current.style.display = "block";
-      tooltipRef.current.innerHTML = countryName;
-      tooltipRef.current.style.left = `${e.originalEvent.pageX}px`;
-      tooltipRef.current.style.top = `${e.originalEvent.pageY}px`;
-    };
-
-    const hideTooltip = () => {
-      tooltipRef.current.style.display = "none";
     };
 
     const handleCountryClick = (e) => {
@@ -104,13 +102,13 @@ const MapComponent = () => {
     };
 
     const handleMouseLeave = () => {
-      hideTooltip();
-      resetHoverState(); // Ensure hover state is reset on mouse leave
+      africaPopup.remove();
+      resetHoverState();
     };
 
     map.on("load", initializeMap);
     map.on("mousemove", "africa-countries", handleMouseMove);
-    map.on("mouseleave", "africa-countries", handleMouseLeave); // Add this handler
+    map.on("mouseleave", "africa-countries", handleMouseLeave);
     map.on("click", "africa-countries", handleCountryClick);
     map.on("style.load", () => {
       map.setLayoutProperty("country-label", "visibility", "none");
@@ -127,24 +125,7 @@ const MapComponent = () => {
     };
   }, [setSelectedCountry]);
 
-  return (
-    <>
-      <div ref={mapContainerRef} className="h-full w-full" />
-      <div
-        ref={tooltipRef}
-        style={{
-          display: "none",
-          position: "absolute",
-          backgroundColor: "rgba(255, 255, 255, 0.8)",
-          padding: "4px 8px",
-          borderRadius: "4px",
-          pointerEvents: "none",
-          zIndex: 10,
-          transition: "all 0.3s ease",
-        }}
-      />
-    </>
-  );
+  return <div ref={mapContainerRef} className="h-full w-full" />;
 };
 
 export default MapComponent;

@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { createContext, useState } from "react";
 
-const MapContext = createContext();
+const MapContext = createContext({});
 
 const MapProvider = ({ children }) => {
   const [selectedCountry, setSelectedCountry] = useState(null);
