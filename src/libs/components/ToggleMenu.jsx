@@ -45,7 +45,7 @@ export default function ToggleMenu() {
         <div key={id} className="flex flex-col items-center">
           <button
             onClick={() => handleLayerChange(layer)}
-            className={`flex flex-col items-center transition-transform duration-300 rounded-2xl text-black shadow-2xl p-5 -m-5 ${
+            className={`flex flex-col items-center transition-transform duration-300 rounded-2xl text-black shadow-2xl${
               activeLayer === layer ? "scale-110 bg-white" : ""
             }`}
           >
