@@ -9,7 +9,7 @@ const IPCProvider = ({ children }) => {
   const [ipcData, setIPCData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { mapRef, activeLayer, customPopup } = useMapContext();
+  const { mapRef,  customPopup } = useMapContext();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,74 +25,6 @@ const IPCProvider = ({ children }) => {
 
     fetchData();
   }, []);
-
-  // useEffect(() => {
-  //   if (!mapRef.current) return;
-
-  //   let hoveredStateId = null;
-
-  //   const handleMouseMove = (e) => {
-  //     if (e.features.length > 0) {
-  //       const feature = e.features[0];
-
-  //       if (hoveredStateId !== null) {
-  //         mapRef.current.setFeatureState(
-  //           { source: "africa", id: hoveredStateId },
-  //           { hover: false }
-  //         );
-  //       }
-
-  //       hoveredStateId = feature.id;
-
-  //       mapRef.current.setFeatureState(
-  //         { source: "africa", id: hoveredStateId },
-  //         { hover: true }
-  //       );
-
-  //       const countryCode = feature.properties["iso-a3"];
-  //       const phase3Value = ipcData.find(
-  //         (item) => item.iso3 === countryCode
-  //       )?.phase_3_number;
-
-  //       if (phase3Value !== undefined) {
-  //         customPopup.current.remove();
-
-  //         // Create a new popup and set it to the current hover
-  //         customPopup.current
-  //           .setLngLat(e.lngLat)
-  //           .setHTML(
-  //             `
-  //             <h3>${feature.properties.name}</h3>
-  //             <p>Phase 3: ${phase3Value / 1000000} million</p>
-  //           `
-  //           )
-  //           .addTo(mapRef.current);
-  //       }
-  //     }
-  //   };
-
-  //   const handleMouseLeave = () => {
-  //     if (hoveredStateId !== null) {
-  //       mapRef.current.setFeatureState(
-  //         { source: "africa", id: hoveredStateId },
-  //         { hover: false }
-  //       );
-  //     }
-
-  //     // Remove the popup when leaving the feature
-  //     customPopup.current.remove();
-  //     hoveredStateId = null;
-  //   };
-
-  //   mapRef.current.on("mousemove", "ipc-layer", handleMouseMove);
-  //   mapRef.current.on("mouseleave", "ipc-layer", handleMouseLeave);
-
-  //   return () => {
-  //     // Clean up event listeners
-  //     mapRef.current.off("mousemove", "ipc-layer", handleMouseMove);
-  //     mapRef.current.off("mouseleave", "ipc-layer", handleMouseLeave);
-  //   };
-  // }, [ipcData]);
 
   const applyIPCLayer = () => {
     if (mapRef.current && ipcData.length > 1) {

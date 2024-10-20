@@ -4,16 +4,21 @@ import Lottie from "react-lottie";
 import forestIcon from "@assets/icons/forest.json";
 import rainIcon from "@assets/icons/rain.json";
 import chartIcon from "@assets/icons/chart.json";
+import hazardIcon from "@assets/icons/hazard.json";
 import { useMapContext } from "@features/map/hooks/useMapContext";
-import { useEffect } from "react";
 
 const iconData = [
-  // { id: "food", animationData: foodIcon, label: "Food", layer: "fcs" },
   {
     id: "chart",
     animationData: chartIcon,
     label: "Charts",
     layer: "ipc",
+  },
+  {
+    id: "hazard",
+    animationData: hazardIcon,
+    label: "Hazards",
+    layer: "hazard",
   },
   { id: "rain", animationData: rainIcon, label: "Rain", layer: "rain" },
   {
@@ -40,7 +45,7 @@ export default function ToggleMenu() {
         <div key={id} className="flex flex-col items-center">
           <button
             onClick={() => handleLayerChange(layer)}
-            className={`flex flex-col items-center transition-transform duration-300 rounded-2xl text-black ${
+            className={`flex flex-col items-center transition-transform duration-300 rounded-2xl text-black shadow-2xl ${
               activeLayer === layer ? "scale-110 bg-white" : ""
             }`}
           >

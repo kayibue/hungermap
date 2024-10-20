@@ -6,16 +6,21 @@ import Legend from "@libs/components/Legend";
 import { useEffect } from "react";
 import { useMapContext } from "@features/map/hooks/useMapContext";
 import { useIPCContext } from "@features/ipc/hooks/useIPCContext";
+import { useClimateContext } from "@features/climate/hooks/useClimateContext";
 
 const HomePage = () => {
-  const { activeLayer, setActiveLayer } = useMapContext();
-  const { applyIPCLayer, loading } = useIPCContext();
+  const { activeLayer } = useMapContext();
+  const { applyIPCLayer } = useIPCContext();
+  const { applyRainLayer, applyVegetationLayer } = useClimateContext();
 
   useEffect(() => {
     if (activeLayer === "ipc") {
       applyIPCLayer();
     } else if (activeLayer === "rain") {
+      applyRainLayer();
     } else if (activeLayer === "vegetation") {
+      applyVegetationLayer();
+    } else if (activeLayer === "hazard") {
     }
   }, [activeLayer]);
 
@@ -30,7 +35,7 @@ const HomePage = () => {
       </div>
 
       {/* Quick Info Panel on Far Left */}
-      <div className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-80 shadow-lg p-4 z-10">
+      <div className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10">
         <InfoPanel />
       </div>
 

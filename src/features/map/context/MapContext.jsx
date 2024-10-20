@@ -62,7 +62,7 @@ const MapProvider = ({ children }) => {
         const country = e.features[0];
         const [lng, lat] = country.geometry.coordinates[0][0];
         map.flyTo({ center: [lng, lat], zoom: 5 });
-        setSelectedCountry(country.properties.name);
+        setSelectedCountry(country);
       };
 
       map.on("click", "africa-countries", handleCountryClick);
