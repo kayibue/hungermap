@@ -10,9 +10,10 @@ const CountryProvider = ({ children }) => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
         const data = await countryInfoService.fetchCountryData();
-        setCountryData(data);
+        setCountryData(data.data.body.countries);
       } catch (err) {
         setError(err);
       } finally {

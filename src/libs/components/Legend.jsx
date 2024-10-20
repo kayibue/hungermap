@@ -9,12 +9,11 @@ function Legend() {
 
   return (
     <div>
-      {activeLayer && activeLayer === "ipc" && <IPCLegend />} <></>
-      {activeLayer && activeLayer === "rain" && <RainfallLegend />} <></>
-      {activeLayer && activeLayer === "vegetation" && <VegetationLegend />}{" "}
-      <></>
+      {activeLayer && activeLayer === "ipc" && <IPCLegend />}
+      {activeLayer && activeLayer === "rain" && <RainfallLegend />}
+      {activeLayer && activeLayer === "vegetation" && <VegetationLegend />}
     </div>
   );
-}
+} 
 
 export default Legend;
