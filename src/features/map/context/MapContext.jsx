@@ -81,6 +81,19 @@ const MapProvider = ({ children }) => {
     };
   }, []);
 
+  // Function to reset the map and clear the selected country
+  const resetMap = () => {
+    if (mapRef.current) {
+      // Clear the selected country
+      setSelectedCountry(null);
+
+      // remove the layers and set the ipc as the active layer
+
+      // Reset the map to its initial state
+      mapRef.current.flyTo({ center: [20, 10], zoom: 2.5 });
+    }
+  };
+
   return (
     <MapContext.Provider
       value={{
@@ -91,6 +104,7 @@ const MapProvider = ({ children }) => {
         setActiveLayer,
         activeLayer,
         customPopup,
+        resetMap,
       }}
     >
       {children}

@@ -9,7 +9,7 @@ import { useFCSContext } from "@features/fcs/hooks/useFCSContext";
 import { useCountryContext } from "@features/country/hooks/useCountryContext";
 
 function InfoPanel() {
-  const { selectedCountry } = useMapContext();
+  const { selectedCountry, setSelectedCountry, mapRef } = useMapContext();
   const { fcsData, loading } = useFCSContext();
   const { countryData } = useCountryContext();
 
@@ -24,6 +24,16 @@ function InfoPanel() {
       data-aos="fade-right"
       className="p-4 bg-black bg-opacity-40 shadow-lg text-gray-300 w-[75%] text-sm"
     >
+      <button
+        className="absolute right-[30%] text-white font-bold"
+        onClick={() => {
+          setSelectedCountry(null);
+          mapRef.current.flyTo({ center: [20, 10], zoom: 2.5 });
+        }}
+      >
+        x
+      </button>
+
       <h2 className="space-x-3">
         <span className="text-xl font-bold">
           {selectedCountry.properties.name}
