@@ -1,6 +1,10 @@
 # HungerMap
 
-## Table of Contents
+![Project Screenshot](https://res.cloudinary.com/dtgcfojym/image/upload/v1729500411/tmp/b4tqu3jh2onvgaoewajw.png)
+
+![Project Screenshot](https://res.cloudinary.com/dtgcfojym/image/upload/v1729500472/tmp/v9eqjwtj4anemghknrnh.png)
+
+## Table of Content
 
 - [Overview](#overview)
 - [Features](#features)
@@ -25,6 +29,7 @@ HungerMap is an interactive web application designed to visualize food security 
 
 ## Technologies Used
 
+- **UI/UX**: Figma - Access to Figma designs [here](<https://www.figma.com/design/QY86aQMfsszar6KSfq4hG9/Design---WFP-(Frontend-Assessment)?node-id=0-1&t=2Yyy6CcHj8zckQeS-1>).
 - **Frontend**: React.js
 - **Build Tool**: Vite
 - **State Management**: React Context API
