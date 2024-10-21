@@ -8,7 +8,7 @@ const ClimateProvider = ({ children }) => {
   const [climateData, setClimateData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { mapRef, customPopup } = useMapContext();
+  const { mapRef, customPopup, removeLayers } = useMapContext();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,14 +23,6 @@ const ClimateProvider = ({ children }) => {
     };
     fetchData();
   }, []);
-
-  const removeLayers = (...layers) => {
-    layers.forEach((layerId) => {
-      if (mapRef.current.getLayer(layerId)) {
-        mapRef.current.removeLayer(layerId);
-      }
-    });
-  };
 
   const handleHoverEvents = (layerId, dataLookup, description) => {
     let hoveredStateId = null;
@@ -113,7 +105,14 @@ const ClimateProvider = ({ children }) => {
           item.dataPoints[0].rainfall.prevalenceWet;
       });
 
-      removeLayers("rain-layer", "ipc-layer", "africa-borders");
+      removeLayers([
+        "ipc-layer",
+        "ipc-hover",
+        "rain-layer",
+        "vegetation-layer",
+        "hazard-layer",
+        "africa-borders",
+      ]);
 
       const rainColorScale = [
         0,
@@ -149,7 +148,13 @@ const ClimateProvider = ({ children }) => {
           item.dataPoints[0].ndvi.prevalenceDry;
       });
 
-      removeLayers("vegetation-layer");
+      removeLayers([
+        "ipc-layer",
+        "ipc-hover",
+        "rain-layer",
+        "vegetation-layer",
+        "hazard-layer",
+      ]);
 
       const vegetationColorScale = [
         0,

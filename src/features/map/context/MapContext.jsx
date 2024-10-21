@@ -82,15 +82,13 @@ const MapProvider = ({ children }) => {
   }, []);
 
   // Function to reset the map and clear the selected country
-  const resetMap = () => {
+  const removeLayers = (layers) => {
     if (mapRef.current) {
-      // Clear the selected country
-      setSelectedCountry(null);
-
-      // remove the layers and set the ipc as the active layer
-
-      // Reset the map to its initial state
-      mapRef.current.flyTo({ center: [20, 10], zoom: 2.5 });
+      layers.forEach((layer) => {
+        if (mapRef.current.getLayer(layer)) {
+          mapRef.current.removeLayer(layer);
+        }
+      });
     }
   };
 
@@ -104,7 +102,7 @@ const MapProvider = ({ children }) => {
         setActiveLayer,
         activeLayer,
         customPopup,
-        resetMap,
+        removeLayers,
       }}
     >
       {children}

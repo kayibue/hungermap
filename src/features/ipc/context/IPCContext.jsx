@@ -9,7 +9,7 @@ const IPCProvider = ({ children }) => {
   const [ipcData, setIPCData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const { mapRef,  customPopup } = useMapContext();
+  const { mapRef, customPopup, removeLayers } = useMapContext();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,18 +33,13 @@ const IPCProvider = ({ children }) => {
         phase3Lookup[item.iso3] = item.phase_3_plus_number / 1000000;
       });
 
-      // Check if the layer already exists and remove it if it does
-      // if (mapRef.current.getLayer("africa-countries")) {
-      //   mapRef.current.removeLayer("africa-countries");
-      // }
-
-      if (mapRef.current.getLayer("ipc-layer")) {
-        mapRef.current.removeLayer("ipc-layer");
-      }
-
-      if (mapRef.current.getLayer("ipc-hover")) {
-        mapRef.current.removeLayer("ipc-hover");
-      }
+      removeLayers([
+        "ipc-layer",
+        "ipc-hover",
+        "rain-layer",
+        "vegetation-layer",
+        "hazard-layer",
+      ]);
 
       mapRef.current.addLayer({
         id: "ipc-layer",

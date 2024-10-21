@@ -18,6 +18,7 @@ function InfoPanel() {
       (country) => country?.country?.iso3 === fcsData?.country?.iso3
     );
   }, [countryData, fcsData]);
+  
 
   return selectedCountry ? (
     <div
@@ -145,9 +146,8 @@ function InfoPanel() {
                     {matchedCountry?.malnutrition
                       ? `${
                           matchedCountry?.malnutrition.acute_percent * 100
-                        }`.slice(0, 5)
+                        }`.slice(0, 5) + "%"
                       : "No Data"}
-                    %
                   </span>
                 </div>
               </div>
@@ -172,9 +172,8 @@ function InfoPanel() {
                     {matchedCountry?.malnutrition
                       ? `${
                           matchedCountry?.malnutrition.chronic_percent * 100
-                        }`.slice(0, 5)
+                        }`.slice(0, 5) + "%"
                       : "No Data"}
-                    %
                   </span>
                 </div>
               </div>
