@@ -1,4 +1,4 @@
-# HungerMap - [Live](https://main.d2zx4v2ufrgwcl.amplifyapp.com)
+# HungerMap - [Visit Deployed Version](https://main.d2zx4v2ufrgwcl.amplifyapp.com)
 
 ![Project Screenshot](https://res.cloudinary.com/dtgcfojym/image/upload/v1729500411/tmp/b4tqu3jh2onvgaoewajw.png)
 
