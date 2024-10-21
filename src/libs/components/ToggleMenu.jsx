@@ -6,6 +6,7 @@ import rainIcon from "@assets/icons/rain.json";
 import chartIcon from "@assets/icons/chart.json";
 import hazardIcon from "@assets/icons/hazard.json";
 import { useMapContext } from "@features/map/hooks/useMapContext";
+import { useHazardContext } from "@features/hazard/hooks/useHazardContext";
 
 const iconData = [
   {
@@ -31,9 +32,14 @@ const iconData = [
 
 export default function ToggleMenu() {
   const { activeLayer, setActiveLayer } = useMapContext();
+  const { setActive } = useHazardContext();
 
   const handleLayerChange = (layer) => {
-    setActiveLayer(layer);
+    if (layer === "hazard") {
+      setActive((prev) => !prev);
+    } else {
+      setActiveLayer(layer);
+    }
   };
 
   return (

@@ -7,11 +7,13 @@ import { useEffect } from "react";
 import { useMapContext } from "@features/map/hooks/useMapContext";
 import { useIPCContext } from "@features/ipc/hooks/useIPCContext";
 import { useClimateContext } from "@features/climate/hooks/useClimateContext";
+import { useHazardContext } from "@features/hazard/hooks/useHazardContext";
 
 const HomePage = () => {
   const { activeLayer } = useMapContext();
   const { applyIPCLayer } = useIPCContext();
   const { applyRainLayer, applyVegetationLayer } = useClimateContext();
+  const { applyHazardLayer, active, removeHazardLayer } = useHazardContext();
 
   useEffect(() => {
     if (activeLayer === "ipc") {
@@ -20,9 +22,14 @@ const HomePage = () => {
       applyRainLayer();
     } else if (activeLayer === "vegetation") {
       applyVegetationLayer();
-    } else if (activeLayer === "hazard") {
     }
-  }, [activeLayer]);
+
+    if (active) {
+      applyHazardLayer();
+    } else {
+      removeHazardLayer();
+    }
+  }, [activeLayer, active]);
 
   return (
     <div className="h-screen relative">
