@@ -98,13 +98,13 @@ cd hungermap
 npm install
 ```
 
-1. Set an environment variable `VITE_MAPBOX_ACCESS_TOKEN` which holds the MAPBOX access token
+3. Set an environment variable `VITE_MAPBOX_ACCESS_TOKEN` which holds the MAPBOX access token
 
 ```bash
 VITE_MAPBOX_ACCESS_TOKEN = pk.xxxxxxxxx
 ```
 
-1. Start the development server:
+4. Start the development server:
 
 ```bash
 npm run dev
