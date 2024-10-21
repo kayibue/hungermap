@@ -1,5 +1,3 @@
-# ReadMe
-
 # HungerMap Frontend
 
 ## Table of Contents
