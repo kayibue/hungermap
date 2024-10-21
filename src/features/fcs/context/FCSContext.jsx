@@ -1,13 +1,13 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { fcsService } from "../services/fcs.services";
 import { useMapContext } from "../../map/hooks/useMapContext";
+import toast from "react-hot-toast";
 
 const FCSContext = createContext();
 
 const FCSProvider = ({ children }) => {
   const [fcsData, setFCSData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const { selectedCountry } = useMapContext();
 
   const fetchData = async (is_03_code) => {
@@ -16,7 +16,10 @@ const FCSProvider = ({ children }) => {
       const data = await fcsService.fetchFCSData(is_03_code);
       setFCSData(data.data.body);
     } catch (err) {
-      setError(err);
+      toast.error(`IPC API: ${err.response?.data?.message}`, {
+        position: "top-right",
+        duration: 5000,
+      });
     } finally {
       setLoading(false);
     }
@@ -29,7 +32,7 @@ const FCSProvider = ({ children }) => {
   }, [selectedCountry]);
 
   return (
-    <FCSContext.Provider value={{ fcsData, loading, error, fetchData }}>
+    <FCSContext.Provider value={{ fcsData, loading, fetchData }}>
       {children}
     </FCSContext.Provider>
   );

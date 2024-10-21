@@ -17,7 +17,7 @@ const IPCProvider = ({ children }) => {
         const data = await ipcService.fetchIPCData();
         setIPCData(data?.data?.body?.ipc_peaks);
       } catch (err) {
-        toast.error(`IPC API: ${err.response.data.message}`, {
+        toast.error(`IPC API: ${err.response?.data?.message}`, {
           position: "top-right",
           duration: 5000,
         });

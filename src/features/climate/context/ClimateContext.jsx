@@ -1,13 +1,13 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { climateService } from "../services/climate.services";
 import { useMapContext } from "@features/map/hooks/useMapContext";
+import toast from "react-hot-toast";
 
 const ClimateContext = createContext();
 
 const ClimateProvider = ({ children }) => {
   const [climateData, setClimateData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const { mapRef, customPopup, removeLayers } = useMapContext();
 
   useEffect(() => {
@@ -16,7 +16,10 @@ const ClimateProvider = ({ children }) => {
         const response = await climateService.fetchClimateData();
         setClimateData(response.data.body.countries);
       } catch (err) {
-        setError(err);
+        toast.error(`IPC API: ${err.response?.data?.message}`, {
+          position: "top-right",
+          duration: 5000,
+        });
       } finally {
         setLoading(false);
       }
@@ -183,7 +186,6 @@ const ClimateProvider = ({ children }) => {
       value={{
         climateData,
         loading,
-        error,
         applyRainLayer,
         applyVegetationLayer,
       }}

@@ -11,6 +11,7 @@ import wildfireIcon from "@assets/markers/wildfire.png";
 import extremeTemperatureIcon from "@assets/markers/extreme_temperature.png";
 import droughtIcon from "@assets/markers/drought.png";
 import hazardIcon from "@assets/markers/hazard.png";
+import toast from "react-hot-toast";
 
 const HazardContext = createContext();
 
@@ -19,7 +20,6 @@ const HazardProvider = ({ children }) => {
   const [hazards, setHazards] = useState([]);
   const [loading, setLoading] = useState(true);
   const [active, setActive] = useState(false);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,7 +28,10 @@ const HazardProvider = ({ children }) => {
         const data = await hazardInfoService.fetchHazardsData();
         setHazards(data.data.body.hazards);
       } catch (err) {
-        setError(err);
+        toast.error(`IPC API: ${err.response?.data?.message}`, {
+          position: "top-right",
+          duration: 5000,
+        });
       } finally {
         setLoading(false);
       }
@@ -96,7 +99,6 @@ const HazardProvider = ({ children }) => {
       value={{
         hazards,
         loading,
-        error,
         applyHazardLayer,
         removeHazardLayer,
         active,
