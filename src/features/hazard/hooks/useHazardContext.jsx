@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { HazardContext } from "../context/HazardContext";
 
-//custom hook to access the map context
 const useHazardContext = () => {
   const context = useContext(HazardContext);
 

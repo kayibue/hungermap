@@ -1,6 +1,5 @@
 import React from "react";
 import Lottie from "react-lottie";
-// import foodIcon from "@assets/icons/food.json";
 import forestIcon from "@assets/icons/forest.json";
 import rainIcon from "@assets/icons/rain.json";
 import chartIcon from "@assets/icons/chart.json";

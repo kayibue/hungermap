@@ -81,7 +81,7 @@ const MapProvider = ({ children }) => {
     };
   }, []);
 
-  // Function to reset the map and clear the selected country
+  // remove layers from map
   const removeLayers = (layers) => {
     if (mapRef.current) {
       layers.forEach((layer) => {
