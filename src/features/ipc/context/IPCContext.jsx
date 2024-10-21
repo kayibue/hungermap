@@ -2,13 +2,13 @@ import React, { createContext, useEffect, useState } from "react";
 import mapboxgl from "mapbox-gl";
 import { ipcService } from "../services/ipc.services";
 import { useMapContext } from "../../map/hooks/useMapContext";
+import toast from "react-hot-toast";
 
 const IPCContext = createContext();
 
 const IPCProvider = ({ children }) => {
   const [ipcData, setIPCData] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const { mapRef, customPopup, removeLayers } = useMapContext();
 
   useEffect(() => {
@@ -17,7 +17,10 @@ const IPCProvider = ({ children }) => {
         const data = await ipcService.fetchIPCData();
         setIPCData(data?.data?.body?.ipc_peaks);
       } catch (err) {
-        setError(err);
+        toast.error(`IPC API: ${err.response.data.message}`, {
+          position: "top-right",
+          duration: 5000,
+        });
       } finally {
         setLoading(false);
       }
@@ -27,7 +30,7 @@ const IPCProvider = ({ children }) => {
   }, []);
 
   const applyIPCLayer = () => {
-    if (mapRef.current && ipcData.length > 1) {
+    if (mapRef.current && ipcData) {
       const phase3Lookup = {};
       ipcData.forEach((item) => {
         phase3Lookup[item.iso3] = item.phase_3_plus_number / 1000000;
@@ -152,7 +155,7 @@ const IPCProvider = ({ children }) => {
   };
 
   return (
-    <IPCContext.Provider value={{ loading, error, applyIPCLayer }}>
+    <IPCContext.Provider value={{ loading, applyIPCLayer }}>
       {children}
     </IPCContext.Provider>
   );

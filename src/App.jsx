@@ -2,6 +2,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import Routes from "@routes";
 import AOS from "aos";
 import { useEffect } from "react";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   useEffect(() => {
@@ -11,9 +12,12 @@ function App() {
   }, []);
 
   return (
-    <Router>
-      <Routes />
-    </Router>
+    <div>
+      <Toaster />
+      <Router>
+        <Routes />
+      </Router>
+    </div>
   );
 }
 
