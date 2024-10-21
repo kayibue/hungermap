@@ -3,6 +3,15 @@ import { useMapContext } from "@features/map/hooks/useMapContext";
 import { hazardInfoService } from "../services/hazard.service";
 import mapboxgl from "mapbox-gl";
 
+// Importing hazard icons
+import floodIcon from "@assets/markers/flood.png";
+import cycloneIcon from "@assets/markers/tornado.png";
+import volcanoIcon from "@assets/markers/volcano.png";
+import wildfireIcon from "@assets/markers/wildfire.png";
+import extremeTemperatureIcon from "@assets/markers/extreme_temperature.png";
+import droughtIcon from "@assets/markers/drought.png";
+import hazardIcon from "@assets/markers/hazard.png";
+
 const HazardContext = createContext();
 
 const HazardProvider = ({ children }) => {
@@ -57,19 +66,19 @@ const HazardProvider = ({ children }) => {
   const getIconUrl = (type) => {
     switch (type) {
       case "FLOOD":
-        return "src/assets/markers/flood.png";
+        return floodIcon;
       case "CYCLONE":
-        return "src/assets/markers/tornado.png";
+        return cycloneIcon;
       case "VOLCANO":
-        return "src/assets/markers/volcano.png";
+        return volcanoIcon;
       case "WILDFIRE":
-        return "src/assets/markers/wildfire.png";
+        return wildfireIcon;
       case "EXTREMETEMPERATURE":
-        return "src/assets/markers/extreme_temperature.png";
+        return extremeTemperatureIcon;
       case "DROUGHT":
-        return "src/assets/markers/drought.png";
+        return droughtIcon;
       default:
-        return "src/assets/markers/hazard.png";
+        return hazardIcon;
     }
   };
 
